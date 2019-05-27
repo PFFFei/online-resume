@@ -1,0 +1,309 @@
+
+{% load staticfiles %}
+{% load static %}
+
+
+<link rel="stylesheet" href="{% static '/resume/css/style.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.0/remodal.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.0/remodal-default-theme.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.0/remodal.min.js"></script>
+{% if edit %}
+<link rel="stylesheet" href='{% static "/webpage/css/bootstrap.min.css" %}'>  
+<script src="{% static '/resume/js/script.js' %}"></script>
+{% include 'accounts/navbar.html' %}
+{% endif %}
+<div class="container" id="cv">
+    <input type="hidden" value="{{ number }}">
+    <div class="side">
+        <div class="me">
+            <div class="portrait"></div>
+            <h1 id="username" >{{ name }}</h1>
+            <h4 id="persona-tag" >{{ position }}</h4>
+        </div>
+        {% if profile %}
+        <div class="profile info-unit">
+            <h2 class="info-header"><i class="iconfont icon-person"></i> <span class="info-title">基本信息</span></h2>
+            <hr>
+            <ul class="info-list">
+                {% for profile_info in profile %}
+                    <li><label class="left-label">{{ profile_info.0 }}</label><span class="label-value">{{ profile_info.1 }}</span></li>
+                {% endfor %}
+            </ul>
+        </div>    
+        {% endif %}
+        {% if contact %}
+        <div class="contact info-unit">
+            <h2 class="info-header"><i class="iconfont icon-call"></i> <span class="info-title">联系方式</span></h2>
+            <hr>
+            <ul class="info-list">
+                {% for info in contact %}
+                    <li><label class="left-label">{{ info.0 }}</label><span class="label-value">{{ info.1 }}</span></li>
+                {% endfor %}
+            </ul>
+        </div>    
+        {% endif %}
+        {% if stack %}
+        <div class="stack info-unit">
+            <h2 class="info-header"><i class="iconfont icon-build"></i> <span class="info-title">技术栈</span></h2>
+            <hr>
+            <ul class="stack-list">
+                {% for info in stack %}
+                    <li><label class="left-label">{{ info.0 }}</label><span class="label-value">{{ info.1 }}</span></li>
+                {% endfor %}
+            </ul>
+        </div>    
+        {% endif %}
+    </div>
+    <div class="main">
+        {% if education %}
+        <div class="education info-unit right-list">
+            <h2 class="info-header"><i class="iconfont icon-education"></i> <span class="info-title">教育经历</span></h2>
+            <hr>
+            <ul class="experience-list">
+                {% for info in education %}
+                <li>
+                    <h3>{{ info.0 }}</h3>
+                    <p>{{ info.1 }} </p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% if work %}
+        <div class="work info-unit right-list">
+            <h2 class="info-header"><i class="iconfont icon-work"></i> <span class="info-title">工作经历</span></h2>
+            <hr>
+            <ul class="experience-list">
+                {% for info in work %}
+                <li>
+                    <h3>{{ info.0 }}</h3>
+                    <p>{{ info.1 }} </p>
+                </li>
+                {% endfor %}
+            </ul class="experience-list">
+        </div>            
+        {% endif %}
+        {% if project %}
+        <div class="project info-unit right-list">
+            <h2 class="info-header"><i class="iconfont icon-project"></i> <span class="info-title">个人项目</span></h2>
+            <hr>
+            <ul class="experience-list">
+                {% for info in project %}
+                <li>
+                    <h3>{{ info.0 }}</h3>
+                    <p>{{ info.1 }} </p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>   
+        {% endif %}
+        {% if trophy %}
+        <div class="trophy info-unit">
+            <h2 class="info-header"><i class="iconfont icon-trophy"></i> <span class="info-title">奖项与证书</span></h2>
+            <hr>
+            <ul class="experience-list">
+                {% for info in trophy %}
+                <li>
+                    <h3>{{ info.0 }}</h3>
+                    <p>{{ info.1 }} </p>
+                </li>
+                {% endfor %}
+            </ul>                    
+        </div>  
+        {% endif %}
+
+        {% if aboutme %}
+        <div class="aboutme info-unit right-paragraph">
+            <h2 class="info-header"><i class="iconfont icon-flower"></i> <span class="info-title">自我评价</span></h2>
+            <hr>
+            <p>
+                {{ aboutme }}
+            </p>
+        </div>
+        {% endif %}
+        
+    </div>
+</div>
+
+{% if print %}
+<script>
+$(document).ready(function() {
+    window.print();
+});
+</script>
+{% endif %}
+{% if edit %}
+<script type="text/javascript">
+
+
+function JsonData()
+{
+window.JSONARR = [];
+getValue();
+
+function getValue() {
+
+    var side = document.getElementsByClassName("side")[0];
+
+    var me = side.getElementsByClassName("me")[0];
+    var name = me.getElementsByTagName("h1")[0].innerText;
+    var position = me.getElementsByTagName("h4")[0].innerText;
+    
+    if(document.getElementsByClassName("profile").length){
+        var profile_list = [];
+        var profile_info = side.getElementsByClassName("profile")[0];
+        var profile = profile_info.getElementsByTagName("li");
+        if(profile_info){
+            var left_label = [];label_value = [];
+            for(var i=0;i<profile.length;i++){
+                left_label.push(profile[i].getElementsByClassName("left-label")[0].innerText);
+                label_value.push(profile[i].getElementsByClassName("label-value")[0].innerText);
+            }
+            profile_list.push(left_label,label_value);
+        }
+    }else{
+        var profile_list = [[],[]];
+    }
+    
+    if(document.getElementsByClassName("contact").length){
+        var contact_list = [];
+        var contact_info = side.getElementsByClassName("contact")[0];
+        var contact = contact_info.getElementsByTagName("li");
+        if(contact_info){
+            var left_label = [];label_value = [];
+            for(var i=0;i<contact.length;i++){
+                left_label.push(contact[i].getElementsByClassName("left-label")[0].innerText);
+                label_value.push(contact[i].getElementsByClassName("label-value")[0].innerText);
+            }
+            contact_list.push(left_label,label_value);
+        }
+    }else{
+        var contact_list = [[],[]];
+    }
+    
+    if(document.getElementsByClassName("stack").length){
+        var stack_list = [];
+        var stack_info = side.getElementsByClassName("stack")[0];
+        var stack = stack_info.getElementsByTagName("li");
+        if(stack_info){
+            var left_label = [];label_value = [];
+            for(var i=0;i<stack.length;i++){
+                left_label.push(stack[i].getElementsByClassName("left-label")[0].innerText);
+                label_value.push(stack[i].getElementsByClassName("label-value")[0].innerText);
+            }
+            stack_list.push(left_label,label_value)
+        }
+    }else{
+        var stack_list = [[],[]];
+    }
+    var main = document.getElementsByClassName("main")[0];
+    
+    if(document.getElementsByClassName("education").length){
+        var education_list = [];
+        var education_info = main.getElementsByClassName("education")[0];
+        var education = education_info.getElementsByTagName("li");
+        if(education_info){
+            var h = [];p = [];
+            for(var i=0;i<education.length;i++){
+                h.push(education[i].getElementsByTagName("h3")[0].innerText);
+                p.push(education[i].getElementsByTagName("p")[0].innerText);
+            }
+            education_list.push(h,p);
+        }
+    }else{
+        var education_list = [[],[]];
+    }
+    
+    if(document.getElementsByClassName("education").length){
+        var work_list = [];
+        var work_info = main.getElementsByClassName("work")[0];
+        var work = work_info.getElementsByTagName("li");
+        if(work_info){
+            var h = [];p = [];
+            for(var i=0;i<work.length;i++){
+                h.push(work[i].getElementsByTagName("h3")[0].innerText);
+                p.push(work[i].getElementsByTagName("p")[0].innerText);
+            }
+            work_list.push(h,p);
+        }
+    }else{
+        var work_list = [[],[]];
+    }
+    
+    if(document.getElementsByClassName("education").length){
+        var project_list =[];
+        var project_info = main.getElementsByClassName("project")[0];
+        var project = project_info.getElementsByTagName("li");
+        if(project_info){
+            var h = [];p = [];
+            for(var i=0;i<project.length;i++){
+                h.push(project[i].getElementsByTagName("h3")[0].innerText);
+                p.push(project[i].getElementsByTagName("p")[0].innerText);
+            }
+            project_list.push(h,p);
+        }
+    }else{
+        var project_list =[[],[]];
+    }
+    
+    if(document.getElementsByClassName("trophy").length){
+        var trophy_list = [];
+        var trophy_info = main.getElementsByClassName("trophy")[0];
+        var trophy = trophy_info.getElementsByTagName("li");
+        if(trophy_info){
+            var h = [];p = [];
+            for(var i=0;i<trophy.length;i++){
+                h.push(trophy[i].getElementsByTagName("h3")[0].innerText);
+                p.push(trophy[i].getElementsByTagName("p")[0].innerText);
+            }
+            trophy_list.push(h,p);
+        }
+    }else{
+        var trophy_list = [[],[]];
+    }
+    if(document.getElementsByClassName("aboutme").length){
+        var aboutme = main.getElementsByClassName("aboutme")[0].getElementsByTagName("p")[0].innerText;
+    }else{
+        var aboutme = ""
+    }
+    var number = document.getElementsByTagName("INPUT")[0].value;
+    window.JSONARR.push({
+        'name':name,
+        'position':position,
+        'profile':profile_list,
+        'contact':contact_list,
+        'stack':stack_list,
+        'education':education_list,
+        'work':work_list,
+        'project':project_list,
+        'trophy':trophy_list,
+        'aboutme':aboutme,
+        'number':number,
+    })
+
+}
+
+// alert(JSON.stringify(window.JSONARR));
+var data = JSON.stringify(window.JSONARR)
+console.log(data,typeof(data))
+
+$.ajax({
+    type:'POST',
+    url:'{% url "cv:create" %}',
+    data:data,
+    dataType:'json',
+    success:function(msg){
+        if(msg){
+            window.location.href = '{% url "cv:list" %}'
+        }
+    },
+    error:function(xhr,type) {
+    
+    }
+});
+}
+
+</script>
+{% endif %}
+

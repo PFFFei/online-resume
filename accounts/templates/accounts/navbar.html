@@ -1,0 +1,31 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{% url 'accounts:home' %}">在线简历</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        {% if request.user.is_authenticated %}
+        <li><a href="{% url 'cv:list' %}">我的简历</a></li>
+        <li><a href="{% url 'cv:create' %}">创建简历</a></li>
+        {% endif %}
+        {% if request.path == "/create/" %}
+        <li onclick="JsonData()"><a href="#">保存简历</a></li>
+        {% endif %}
+        {% if edit %}
+        <li onclick="JsonData()"><a href="#">保存简历</a></li>
+        {% endif %}
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+        {% if request.user.is_authenticated %}
+        <li><a href="#">{{ request.user.username }}</a></li>
+        <li><a href="{% url 'accounts:logout' %}">注销</a></li>
+        {% else %}
+        <li><a href="{% url 'accounts:login' %}">登陆</a></li>
+        <li><a href="{% url 'accounts:register' %}">注册</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
